@@ -1,0 +1,29 @@
+# Core FL Framework
+flwr==1.7.0
+
+# Deep Learning
+torch==2.1.0
+torchvision==0.16.0
+
+# Data & ML
+numpy==1.26.0
+pandas==2.1.0
+scikit-learn==1.3.0
+scipy==1.11.0
+
+# Config management
+pyyaml==6.0.1
+omegaconf==2.3.0
+
+# Visualisation
+matplotlib==3.8.0
+seaborn==0.13.0
+plotly==5.17.0
+
+# Logging & tracking
+tqdm==4.66.0
+tensorboard==2.14.0
+
+# Utilities
+requests==2.31.0
+kaggle==1.5.16

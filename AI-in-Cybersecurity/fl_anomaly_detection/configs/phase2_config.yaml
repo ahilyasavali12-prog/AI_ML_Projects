@@ -1,0 +1,31 @@
+# ─────────────────────────────────────────────
+# Phase 2 Config — Core Experiment
+# Week 3: Full comparison, all graphs
+# ─────────────────────────────────────────────
+
+defaults:
+  - base_config
+
+experiment:
+  name: "phase2_nslkdd_full_comparison"
+  seed: 42
+
+federation:
+  num_clients: 10
+  num_rounds: 100
+
+data:
+  dataset: "nsl_kdd"
+
+# Conditions to sweep (run script loops over these):
+# IID, alpha=1.0, alpha=0.5, alpha=0.1
+partitioning:
+  strategy: "non_iid"
+  dirichlet_alpha: 0.1            # override per run
+
+# Aggregation strategies to compare:
+# fedavg | fedprox | scaffold | adaptive
+aggregation:
+  strategy: "adaptive"
+  fedprox_mu: 0.01
+  temperature: 1.0

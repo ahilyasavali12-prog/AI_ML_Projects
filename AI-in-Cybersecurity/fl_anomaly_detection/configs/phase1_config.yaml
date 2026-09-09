@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────────
+# Phase 1 Config — Minimum Viable Experiment
+# Week 2: Validate pipeline, get first results
+# ─────────────────────────────────────────────
+
+defaults:
+  - base_config
+
+experiment:
+  name: "phase1_nslkdd_fedavg_vs_adaptive"
+  seed: 42
+
+federation:
+  num_clients: 5
+  num_rounds: 50
+
+data:
+  dataset: "nsl_kdd"
+
+# Run these two conditions back to back:
+# 1. IID
+# 2. Non-IID alpha=0.1
+partitioning:
+  strategy: "non_iid"
+  dirichlet_alpha: 0.1
+
+aggregation:
+  strategy: "adaptive"
+  temperature: 1.0

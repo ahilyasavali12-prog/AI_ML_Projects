@@ -1,0 +1,74 @@
+# ─────────────────────────────────────────────
+# Base Configuration — FL Anomaly Detection
+# ─────────────────────────────────────────────
+
+experiment:
+  name: "fl_anomaly_detection"
+  seed: 42
+  device: "cuda"                  # auto-falls back to cpu if no GPU
+
+# ── Federation ────────────────────────────────
+federation:
+  num_clients: 10
+  num_rounds: 100
+  fraction_fit: 1.0               # fraction of clients per round
+  fraction_evaluate: 1.0
+  min_fit_clients: 5
+  min_evaluate_clients: 5
+  min_available_clients: 5
+
+# ── Local Training ────────────────────────────
+local_training:
+  epochs: 5
+  batch_size: 64
+  learning_rate: 0.001
+  optimizer: "adam"
+  early_stopping_patience: 10
+
+# ── Autoencoder Architecture ──────────────────
+autoencoder:
+  # NSL-KDD: input_dim = 41, UNSW-NB15: input_dim = 49 (set per dataset)
+  input_dim: 41
+  hidden_dims: [32, 16]
+  bottleneck_dim: 8
+  activation: "relu"
+  dropout: 0.1
+
+# ── Data ──────────────────────────────────────
+data:
+  dataset: "nsl_kdd"              # options: nsl_kdd | unsw_nb15
+  data_dir: "./data/raw"
+  test_split: 0.2
+  val_split: 0.1
+  normalize: true
+
+# ── Partitioning ──────────────────────────────
+partitioning:
+  strategy: "non_iid"             # options: iid | non_iid
+  dirichlet_alpha: 0.1            # only used when strategy = non_iid
+  # alpha guide:
+  #   0.1  → high heterogeneity  (stress test)
+  #   0.5  → moderate            (realistic)
+  #   1.0  → mild                (near-IID)
+
+# ── Aggregation ───────────────────────────────
+aggregation:
+  strategy: "adaptive"            # options: fedavg | fedprox | scaffold | adaptive
+  # FedProx
+  fedprox_mu: 0.01
+  # Adaptive (proposed)
+  temperature: 1.0                # softmax temperature τ ∈ {0.5, 1.0, 2.0}
+
+# ── Evaluation ────────────────────────────────
+evaluation:
+  metrics: ["auc_roc", "f1", "convergence_rounds", "dr", "far"]
+  threshold_method: "global"      # global federated threshold
+  anomaly_percentile: 95          # reconstruction error percentile for threshold
+
+# ── Results ───────────────────────────────────
+results:
+  save_dir: "./results"
+  log_dir: "./results/logs"
+  plot_dir: "./results/plots"
+  checkpoint_dir: "./results/checkpoints"
+  save_every_n_rounds: 10

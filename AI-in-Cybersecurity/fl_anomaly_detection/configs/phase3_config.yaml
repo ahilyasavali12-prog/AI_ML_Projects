@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────────
+# Phase 3 Config — Extended Experiment
+# Week 4: Cross-dataset + statistical robustness
+# ─────────────────────────────────────────────
+
+defaults:
+  - base_config
+
+experiment:
+  name: "phase3_unswnb15_full"
+  seeds: [42, 123, 456]           # 3 seeds for statistical reliability
+
+federation:
+  num_clients: 10
+  num_rounds: 100
+
+data:
+  dataset: "unsw_nb15"            # switch to UNSW-NB15
+  
+autoencoder:
+  input_dim: 49                   # UNSW-NB15 has 49 features
+
+partitioning:
+  strategy: "non_iid"
+  dirichlet_alpha: 0.1
+
+aggregation:
+  strategy: "adaptive"
+  temperature: 1.0
